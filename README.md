@@ -1,31 +1,43 @@
-Interactive-FDTD-Material-Explorer
-Team: shanmukhakumar   Members: BURUSU SHANMUKHA KUMAR, MOHAMMED SHAIK, SHARLI NELATURI  
-RUN INSTRUCTIONS  
-1.pip install numpy matplotlib
-2.python fdtd_interactive.py
+Bayesian Signal Characterization (MCMC)
+Team: shanmukhakumar
+Members: BURUSU SHANMUKHA KUMAR, MOHAMMED SHAIK, SHARLI NELATURI
+RUN INSTRUCTIONS
+pip install numpy matplotlib
+python mcmc_signal.py
+OUTPUTS
+Console: Prints MAP (Maximum A Posteriori) values for A, tau, and omega. Files: Generates 3 analysis images (trace_plots.png, posterior_histograms.png, fit_and_residuals.png).
+PARAMETERS ESTIMATED
 
-Window: 1200×700 with 3 sliders (left) + live plot (right)
-CONTROLS
-| Slider | Range | Effect |
-| Glass εr | 1-9 | Slows wave |
-| Water σ | 0-1 S/m | Absorbs energy |
-| Water εr | 1-15 | Slows in water |
-LAYOUT
-Cells 0-99: Vacuum
-Cells 100-249: GLASS ← User εr
-Cells 250-349: WATER ← User εr, σ
-Cells 350-399: Vacuum
-SOURCE: Cell 50 (1.5 GHz pulse)
+Parameter
+Symbol
+Physical Meaning
+Amplitude
+A
+Signal growth scale
+Turn-off Time
+tau
+Time where signal decay begins
+Frequency
+omega
+Angular frequency of oscillation
+
+
+
+
+THE MODEL
+The code fits raw noisy data to this non-linear physical equation:
+$$y(t) = A \cdot e^t \cdot [1 - \tanh(2(t - \tau))] \cdot \sin(\omega t)$$
 WHAT YOU SEE
-1.	Pulse launches cell 50 → moves right
-2.	Slows in green glass region
-3.	Decays in blue water region
-4.	Drag sliders →  instant change
+Trace Plots: 3 "fuzzy" lines showing the algorithm exploring the parameter space (convergence).
+Histograms: Bell curves showing the probability/uncertainty for each parameter.
+Fit & Residuals: Red line (Model) passing through black dots (Data). Blue dots (Residuals) scattered around zero.
 SPECS
-⦁	Grid: 400×0.8mm = 32cm domain
-⦁	Source: 1.5 GHz modulated pulse
-⦁	Time step: CFL stable (dt=dx/(2c))
-⦁	FPS: 33 (30ms/frame)
+Algorithm: Metropolis-Hastings MCMC
+Iterations: 20,000 steps
+Likelihood: Gaussian with heteroscedastic noise (20% relative error)
+Priors: Uniform (non-informative)
 TESTED
-⦁	Python 3.11.9 (Windows)
-⦁	No additional setup needed
+Python: 3.11.9 (Windows)
+Status: No additional setup needed
+
+
